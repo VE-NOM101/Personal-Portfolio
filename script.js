@@ -2,8 +2,17 @@ const sections= document.querySelectorAll('.section');
 const sectBtns= document.querySelectorAll('.controlls');
 const sectBtn= document.querySelectorAll('.control');
 const allSection= document.querySelector('.main-content');
-
+const nav_list= document.querySelectorAll('.nav-li');
 function Page_Transitions(){
+    //leap forth of menu items
+    for(let i=0;i<nav_list.length;i++){
+        nav_list[i].addEventListener('click',function(){
+            let currLi=document.querySelectorAll('.active');
+            currLi[0].className=currLi[0].className.replace('active','');
+            this.className+=' active';
+        })
+    }
+
     //Used in button click active section
     for(let i=0;i<sectBtn.length;i++){
         sectBtn[i].addEventListener('click',function(){
@@ -48,3 +57,24 @@ function Page_Transitions(){
 }
 
 Page_Transitions();
+
+let text = document.querySelector(".text p");
+
+text.innerHTML = text.innerHTML.split("").map((char,i)=>
+    `<b style="transform:rotate(${i * 6.3}deg")>${char}</b>`
+).join("");
+
+//nav-bar
+var mobMenuContainer = document.getElementById("mobMenuCont");
+var mobMenuWrap = document.getElementById("mobMenuWrap");
+
+function mobMenuToggle() {    
+    mobMenuContainer.classList.add("displayon");
+    mobMenuWrap.classList.add("displayon");
+}
+
+function closeMobMenuToggle() {
+    mobMenuContainer.classList.remove("displayon");
+    mobMenuWrap.classList.remove("displayon");
+}
+
