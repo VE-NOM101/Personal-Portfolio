@@ -871,6 +871,7 @@ section{
   overflow: hidden;
 }
 .sub-main-btn .sub-btn-text {
+  color: var(--color-grey-6);
   padding: 0 2rem;
 }
 .sub-main-btn .sub-btn-icon {
@@ -1577,13 +1578,12 @@ section{
   z-index: 1;
   overflow: hidden;
 }
-
+/*
 .rotate-text span::before{
   content: "";
   position: absolute;
   inset: 20px;
-  /* background: #00aaff; */
-  background-image: url(images/myPic2.png);
+  /* background: #00aaff; 
   filter: grayscale(90%);
   background-position: center;
   background-repeat: no-repeat; 
@@ -1591,7 +1591,7 @@ section{
   border-radius: 50%;
   z-index: 1;
   transition: filter 0.3s ease;
-}
+}*/
 .rotate-text span:hover::before{
   filter: grayscale(0%);
   filter: brightness(110%);
@@ -1870,7 +1870,7 @@ section{
 }
 
 .logo img {
-  width: 65px;
+  width: 5rem;
 }
 
 .menu-sec ul.nav-menu {

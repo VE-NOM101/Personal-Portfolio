@@ -1,0 +1,1 @@
+here myportfolio.sql is provided. The table must be created before performing any action in portfolio.
