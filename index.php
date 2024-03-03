@@ -3,6 +3,15 @@ require('include/db.php');
 $query = "SELECT * FROM header,section_control,social_media";
 $run = mysqli_query($db, $query);
 $user_data = mysqli_fetch_array($run);
+
+session_start();
+if (isset($_SESSION['feedback'])) {
+    $message = $_SESSION['feedback'];
+    unset($_SESSION['feedback']); // Remove the message from session after displaying it
+    echo '<script type="text/javascript">
+            window.onload = function () { alert(" ' . $message . ' "); }
+        </script>';
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +36,7 @@ $user_data = mysqli_fetch_array($run);
             position: absolute;
             inset: 20px;
             /* background: #00aaff; */
-            background-image: url('<?php echo 'admin/header/uploads/'.$user_data['image']; ?>');
+            background-image: url('<?php echo 'admin/header/uploads/' . $user_data['image']; ?>');
             filter: grayscale(90%);
             background-position: center;
             background-repeat: no-repeat;
@@ -99,9 +108,9 @@ $user_data = mysqli_fetch_array($run);
         <div class="menu-content">
             <div class="menu-items">
                 <ul class="nav-menu">
-                <li><a class="nav-li active" href="#">HOME</a></li>
-                <li><a class="nav-li" href="others.php">OTHERS</a></li>
-                <li><a class="nav-li" href="login/login.php">LOGIN</a></li>
+                    <li><a class="nav-li active" href="#">HOME</a></li>
+                    <li><a class="nav-li" href="others.php">OTHERS</a></li>
+                    <li><a class="nav-li" href="login/login.php">LOGIN</a></li>
                 </ul>
             </div>
             <div class="social-items">
@@ -201,11 +210,16 @@ $user_data = mysqli_fetch_array($run);
             <div class="about-container">
                 <div class="left-about">
                     <h4>Information About me</h4>
+                    <?php
+                        $res=mysqli_query($db,'select * from about_me where id=1');
+                        $about_row=mysqli_fetch_array($res);
+
+                    ?>
                     <p>
-                        Will add text later
+                        <?php echo$about_row['info_me']; ?>
                     </p>
                     <div class="btn-con">
-                        <a href="#" class="main-btn">
+                        <a href="<?php echo$about_row['cv_link']; ?>" class="main-btn">
                             <span class="btn-text">Download CV</span>
                             <span class="btn-icon"><i class="fas fa-download"></i></span>
                         </a>
@@ -214,26 +228,26 @@ $user_data = mysqli_fetch_array($run);
                 <div class="right-about">
                     <div class="about-item">
                         <div class="abt-text">
-                            <p class="large-text">10+</p>
+                            <p class="large-text"><?php echo$about_row['info1']; ?></p>
                             <p class="small-text">Projects <br /> Completed</p>
                         </div>
                     </div>
                     <div class="about-item">
                         <div class="abt-text">
-                            <p class="large-text">1+</p>
-                            <p class="small-text">Years of <br /> experience</p>
+                            <p class="large-text"><?php echo$about_row['info2']; ?></p>
+                            <p class="small-text">Years of <br /> Experience <br /> In Autocad</p>
                         </div>
                     </div>
                     <div class="about-item">
                         <div class="abt-text">
-                            <p class="large-text">1+</p>
-                            <p class="small-text">Happy <br /> Clients</p>
+                            <p class="large-text"><?php echo$about_row['info3']; ?></p>
+                            <p class="small-text">Years of <br /> Experience <br /> In App-dev</p>
                         </div>
                     </div>
                     <div class="about-item">
                         <div class="abt-text">
-                            <p class="large-text">1+</p>
-                            <p class="small-text">Customer <br /> reviews</p>
+                            <p class="large-text"><?php echo$about_row['info4']; ?></p>
+                            <p class="small-text">3D-MAX <br /> Models</p>
                         </div>
                     </div>
                 </div>
@@ -347,66 +361,21 @@ $user_data = mysqli_fetch_array($run);
             <h4 class="stat-title">My Timeline</h4>
 
             <div class="timeline">
-                <div class="timeline-item">
-                    <div class="tl-icon">
-                        <i class="fa-solid fa-hourglass-start"></i>
-                    </div>
-                    <p class="tl-duration">2010 - present</p>
-                    <h5>Student <span> - ABC</span></h5>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quasi vero fugit.
-                    </p>
-                </div>
+                <?php 
+                    $res=mysqli_query($db,'select * from timeline order by id desc');
+                    while($row=mysqli_fetch_assoc($res)){
+                ?>
                 <div class="timeline-item">
                     <div class="tl-icon">
                         <i class="fas fa-briefcase"></i>
                     </div>
-                    <p class="tl-duration">2008 - 2011</p>
-                    <h5>Student<span> - ABC, Inc.</span></h5>
+                    <p class="tl-duration"><?php echo$row['duration']; ?></p>
+                    <h5><?php echo$row['role'];?> <span> - <?php echo$row['place'];?></span></h5>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quasi vero fugit.
+                        <?php echo$row['details_para']; ?>
                     </p>
                 </div>
-                <div class="timeline-item">
-                    <div class="tl-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <p class="tl-duration">2016 - 2017</p>
-                    <h5>C++ Programmer<span> - ABC</span></h5>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quasi vero fugit.
-                    </p>
-                </div>
-                <div class="timeline-item">
-                    <div class="tl-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <p class="tl-duration">2009 - 2013</p>
-                    <h5>Student<span> - ABC</span></h5>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quasi vero fugit.
-                    </p>
-                </div>
-                <div class="timeline-item">
-                    <div class="tl-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <p class="tl-duration">2013 - 2016</p>
-                    <h5>Computer Science Degree<span> - ABC</span></h5>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quasi vero fugit.
-                    </p>
-                </div>
-                <div class="timeline-item">
-                    <div class="tl-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <p class="tl-duration">2017 - present</p>
-                    <h5>3d Animation<span> - ABC</span></h5>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quasi vero fugit.
-                    </p>
-                </div>
+                <?php } ?>
             </div>
 
         </section>
@@ -418,72 +387,53 @@ $user_data = mysqli_fetch_array($run);
                 Here is some of my work that I've done in various programming languages.
             </p>
             <div class="portfolios">
-            <?php 
+                <?php
                 $res = mysqli_query($db, "SELECT* from projects ORDER by id DESC");
                 while ($row = mysqli_fetch_array($res)) {
-            ?>
-                <div class="portfolio-item">
-                    <div class="image">
-                        <img src="<?php echo 'admin/projects/uploads/'.$row['project_image'];?>" alt="">
-                    </div>
-                    <div class="hover-items">
-                        <h3><?php echo $row['project_name'];?></h3>
-                        <div class="icons">
-                            <a href="<?php echo $row['github_link'];?>" class="icon">
-                                <i class="fab fa-github"></i>
-                            </a>
-                            <a href="<?php echo $row['youtube_link'];?>" class="icon">
-                                <i class="fab fa-youtube"></i>
-                            </a>
+                ?>
+                    <div class="portfolio-item">
+                        <div class="image">
+                            <img src="<?php echo 'admin/projects/uploads/' . $row['project_image']; ?>" alt="">
+                        </div>
+                        <div class="hover-items">
+                            <h3><?php echo $row['project_name']; ?></h3>
+                            <div class="icons">
+                                <a href="<?php echo $row['github_link']; ?>" class="icon">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                                <a href="<?php echo $row['youtube_link']; ?>" class="icon">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <?php }?>
-            
+                <?php } ?>
+
             </div>
         </section>
         <section class="section sec4" id="blogs">
             <div class="blogs-content">
                 <div class="main-title">
-                    <h2>My <span>Blogs</span><span class="bg-text">My Blogs</span></h2>
-                </div>
+                    <h2>My<span>Achievement</span><span class="bg-text">My Winning</span></h2>
+                </div>       
                 <div class="blogs">
+                <?php 
+                    $res=mysqli_query($db,'select* from achievement');
+                        while($row=mysqli_fetch_assoc($res)){
+                    ?>
                     <div class="blog">
-                        <img src="images/blog1.jpg" alt="">
+                        <img src="<?php echo 'admin/achievement/uploads/'.$row['image']; ?>" alt="">
                         <div class="blog-text">
                             <h4>
-                                How to Create Your Own Website
+                                <?php echo$row['title']; ?>
                             </h4>
                             <p>
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                Doloribus natus voluptas, eos obcaecati recusandae amet?
+                                <?php echo$row['description']; ?>
                             </p>
                         </div>
                     </div>
-                    <div class="blog">
-                        <img src="images/blog2.jpg" alt="">
-                        <div class="blog-text">
-                            <h4>
-                                How to Become an Expert in Web Design
-                            </h4>
-                            <p>
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                Doloribus natus voluptas, eos obcaecati recusandae amet?
-                            </p>
-                        </div>
-                    </div>
-                    <div class="blog">
-                        <img src="images/blog3.jpg" alt="">
-                        <div class="blog-text">
-                            <h4>
-                                How to Become an Expert in Web Design
-                            </h4>
-                            <p>
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                                Doloribus natus voluptas, eos obcaecati recusandae amet?
-                            </p>
-                        </div>
-                    </div>
+                    <?php } ?>
+                    
                 </div>
             </div>
         </section>
@@ -496,9 +446,12 @@ $user_data = mysqli_fetch_array($run);
                 <div class="contact-content-con">
                     <div class="left-contact">
                         <h4>Contact me here</h4>
+                        <?php  
+                            $res = mysqli_query($db, "SELECT* from contact where id=1");
+                            $contact_row = mysqli_fetch_array($res);
+                        ?>
                         <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            In, laborum numquam? Quam excepturi perspiciatis quas quasi.
+                           <?php echo $contact_row['details']; ?>
                         </p>
                         <div class="contact-info">
                             <div class="contact-item">
@@ -507,7 +460,7 @@ $user_data = mysqli_fetch_array($run);
                                     <span>Location</span>
                                 </div>
                                 <p>
-                                    : KUET, Khulna, Bangladesh
+                                    : <?php echo $contact_row['location']; ?>
                                 </p>
                             </div>
                             <div class="contact-item">
@@ -516,7 +469,7 @@ $user_data = mysqli_fetch_array($run);
                                     <span>Email</span>
                                 </div>
                                 <p>
-                                    <span>: choyanbaruakuetcse@gmail.com</span>
+                                    <span>: <?php echo $contact_row['email']; ?></span>
                                 </p>
                             </div>
                             <div class="contact-item">
@@ -525,7 +478,16 @@ $user_data = mysqli_fetch_array($run);
                                     <span>Education</span>
                                 </div>
                                 <p>
-                                    <span>: Khulna University Of Engineering and Technology</span>
+                                    <span>: <?php echo $contact_row['education']; ?></span>
+                                </p>
+                            </div>
+                            <div class="contact-item">
+                                <div class="icon">
+                                    <i class="fas fa-user-tie"></i>
+                                    <span>Profession</span>
+                                </div>
+                                <p>
+                                    <span>: <?php echo $contact_row['profession']; ?></span>
                                 </p>
                             </div>
                             <div class="contact-item">
@@ -534,28 +496,20 @@ $user_data = mysqli_fetch_array($run);
                                     <span>Mobile Number</span>
                                 </div>
                                 <p>
-                                    <span>: 017063160077</span>
+                                    <span>: <?php echo $contact_row['phone']; ?></span>
                                 </p>
                             </div>
-                            <div class="contact-item">
-                                <div class="icon">
-                                    <i class="fas fa-globe-africa"></i>
-                                    <span>Languages</span>
-                                </div>
-                                <p>
-                                    <span>: English, Bangla, Hindi</span>
-                                </p>
-                            </div>
+                            
                         </div>
                         <div class="contact-icons">
                             <div class="contact-icon">
-                                <a href="#" target="_blank">
+                                <a href="<?php echo $user_data['facebook'];?>" target="_blank">
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
-                                <a href="#" target="_blank">
-                                    <i class="fab fa-twitter"></i>
+                                <a href="<?php echo $user_data['linkedin'];?>" target="_blank">
+                                    <i class="fab fa-linkedin"></i>
                                 </a>
-                                <a href="#" target="_blank">
+                                <a href="<?php echo $user_data['github'];?>" target="_blank">
                                     <i class="fab fa-github"></i>
                                 </a>
                             </div>
@@ -563,22 +517,23 @@ $user_data = mysqli_fetch_array($run);
                     </div>
                     <div class="vl"></div>
                     <div class="right-contact">
-                        <form action="" class="contact-form">
+                        <form action="admin/feedback/feedback.php" method="post" class="contact-form">
                             <div class="input-control i-c-2">
-                                <input type="text" required placeholder="NAME">
-                                <input type="email" required placeholder="EMAIL">
+                                <input type="text" name="name" required placeholder="NAME">
+                                <input type="email" name="email" required placeholder="EMAIL">
                             </div>
                             <div class="input-control">
-                                <input type="text" required placeholder="SUBJECT">
+                                <input type="text" name="subject" required placeholder="SUBJECT">
                             </div>
                             <div class="input-control">
-                                <textarea name="" id="" cols="15" rows="8" placeholder="Description..."></textarea>
+                                <textarea name="description" id="" cols="15" rows="8" placeholder="DESCRIPTION..."></textarea>
                             </div>
                             <div class="submit-btn">
-                                <a href="#" class="sub-main-btn">
+                                <!-- hover e transition hoccena -->
+                                <button type="submit" class="sub-main-btn">
                                     <span class="sub-btn-text">Submit</span>
                                     <span class="sub-btn-icon"><i class="fa-regular fa-paper-plane"></i></span>
-                                </a>
+                                </button>
                             </div>
                         </form>
                     </div>

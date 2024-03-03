@@ -57,15 +57,15 @@ $update_success = ""; // Define the variable for success message
 		}
 		if (!isset($error)) {
 			if ($file != '') {
-				$res = mysqli_query($db, "SELECT* from header WHERE id=$id limit 1");
+				$res = mysqli_query($db, "SELECT* from header WHERE id=1");
 				if ($row = mysqli_fetch_array($res)) {
 					$deleteimage = $row['image'];
 				}
 				unlink($folder . $deleteimage);
 				move_uploaded_file($file, $target_file);
-				$result = mysqli_query($db, "UPDATE header SET image='$image_file',description='$description',cv_link='$cv_link' WHERE id=$id");
+				$result = mysqli_query($db, "UPDATE header SET image='$image_file',description='$description',cv_link='$cv_link' WHERE id=1");
 			} else {
-				$result = mysqli_query($db, "UPDATE header SET description='$description',cv_link='$cv_link' WHERE id=$id");
+				$result = mysqli_query($db, "UPDATE header SET description='$description',cv_link='$cv_link' WHERE id=1");
 			}
 			if ($result) {
 				header("location:../admin.php?action=saved");
@@ -82,7 +82,7 @@ $update_success = ""; // Define the variable for success message
 			echo '<div class="message">' . $error . '</div><br>';
 		}
 	}
-	$res = mysqli_query($db, "SELECT* from header WHERE id=$id");
+	$res = mysqli_query($db, "SELECT* from header WHERE id=1");
 	if ($row = mysqli_fetch_array($res)) {
 		$image = $row['image'];
 		$description = $row['description'];

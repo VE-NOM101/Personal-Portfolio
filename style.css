@@ -871,6 +871,7 @@ section{
   overflow: hidden;
 }
 .sub-main-btn .sub-btn-text {
+  color: var(--color-grey-6);
   padding: 0 2rem;
 }
 .sub-main-btn .sub-btn-icon {
